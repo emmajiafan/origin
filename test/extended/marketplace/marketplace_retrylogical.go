@@ -42,7 +42,7 @@ var _ = g.Describe("[sig-operator][Feature:Marketplace] [Serial] Marketplace ret
 	})
 
 	//
-	g.It("[ocp-25672] create the samename opsrc&csc", func() {
+	g.It("check the retry logical of opsrc and csc", func() {
 		// Create csc "retrycsc" and the package "camel-k-marketplace-e2e-tests" that doesn't exist
 		cscYaml, err := oc.AsAdmin().Run("process").Args("--ignore-unknown-parameters=true", "-f", cscYamltem, "-p", "NAME=retrycsc", fmt.Sprintf("NAMESPACE=%s", allNs), fmt.Sprintf("MARKETPLACE=%s", marketplaceNs), "PACKAGES=camel-k-marketplace-e2e-tests", "DISPLAYNAME=retrycsc", "PUBLISHER=retrycsc").OutputToFile("config.json")
 		err = createResources(oc, cscYaml)
