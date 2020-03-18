@@ -44,7 +44,7 @@ var _ = g.Describe("[sig-operator][Feature:Marketplace] [Serial] Marketplace ret
 	//
 	g.It("[ocp-25672] create the samename opsrc&csc", func() {
 		// Create csc "retrycsc" and the package "camel-k-marketplace-e2e-tests" that doesn't exist
-		scYaml, err := oc.AsAdmin().Run("process").Args("--ignore-unknown-parameters=true", "-f", cscYamltem, "-p", "NAME=retrycsc", fmt.Sprintf("NAMESPACE=%s", allNs), fmt.Sprintf("MARKETPLACE=%s", marketplaceNs), "PACKAGES=camel-k-marketplace-e2e-tests", "DISPLAYNAME=retrycsc", "PUBLISHER=retrycsc").OutputToFile("config.json")
+		cscYaml, err := oc.AsAdmin().Run("process").Args("--ignore-unknown-parameters=true", "-f", cscYamltem, "-p", "NAME=retrycsc", fmt.Sprintf("NAMESPACE=%s", allNs), fmt.Sprintf("MARKETPLACE=%s", marketplaceNs), "PACKAGES=camel-k-marketplace-e2e-tests", "DISPLAYNAME=retrycsc", "PUBLISHER=retrycsc").OutputToFile("config.json")
 		err = createResources(oc, cscYaml)
 		o.Expect(err).NotTo(o.HaveOccurred())
 		// Check the csc status
@@ -87,10 +87,10 @@ var _ = g.Describe("[sig-operator][Feature:Marketplace] [Serial] Marketplace ret
 		o.Expect(err).NotTo(o.HaveOccurred())
 
 		// Create opsrc "emptyopsrc" that the return packages list is empty
-		opsrcYaml, err := oc.AsAdmin().Run("process").Args("--ignore-unknown-parameters=true", "-f", opsrcYamltem, "-p", "NAME=emptyopsrc", "NAMESPACE=noexistappregistory", "LABEL=emptyopsrc", "DISPLAYNAME=emptyopsrc", "PUBLISHER=emptyopsrc", fmt.Sprintf("MARKETPLACE=%s", marketplaceNs)).OutputToFile("config.json")
+		opsrcYaml1, err := oc.AsAdmin().Run("process").Args("--ignore-unknown-parameters=true", "-f", opsrcYamltem, "-p", "NAME=emptyopsrc", "NAMESPACE=noexistappregistory", "LABEL=emptyopsrc", "DISPLAYNAME=emptyopsrc", "PUBLISHER=emptyopsrc", fmt.Sprintf("MARKETPLACE=%s", marketplaceNs)).OutputToFile("config.json")
 		o.Expect(err).NotTo(o.HaveOccurred())
 
-		err = createResources(oc, opsrcYaml)
+		err = createResources(oc, opsrcYaml1)
 		o.Expect(err).NotTo(o.HaveOccurred())
 
 		outStatus, err := oc.AsAdmin().Run("get").Args("operatorsource", "emptyopsrc", "-o=jsonpath={.status.currentPhase.phase.name}", "-n", marketplaceNs).Output()
